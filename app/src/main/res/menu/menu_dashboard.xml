@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="com.droid.backupphone.activity.DashboardActivity">
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/logout_rounded_up"
+        android:orderInCategory="100"
+        android:title="@string/action_logout"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/setting_icon"
+        android:orderInCategory="101"
+        android:title="@string/action_settings"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/help_icon"
+        android:orderInCategory="102"
+        android:title="@string/action_help"
+        app:showAsAction="ifRoom"/>
+</menu>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "52209441778",
+    "firebase_url": "https://backupphone-dd1a6.firebaseio.com",
+    "project_id": "backupphone-dd1a6",
+    "storage_bucket": "backupphone-dd1a6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:52209441778:android:f2297b5979660ca4",
+        "android_client_info": {
+          "package_name": "com.droid.backupphone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "52209441778-h89l48fkifs6fn72p40clkv38qgq37lq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.droid.backupphone",
+            "certificate_hash": "2a8ffb0dc91bb3afbeccbc57ab017c7e77ccebd8"
+          }
+        },
+        {
+          "client_id": "52209441778-c41l346ufrtobu8ik9np3avogjjr0eg3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1X5LgXIwiPO9GvwmNNNd1jxeEmXKmY84"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "52209441778-c41l346ufrtobu8ik9np3avogjjr0eg3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
