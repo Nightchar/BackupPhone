@@ -156,4 +156,14 @@ public class CommonUtils {
         tvLinkify.setText(strBuilder);
         tvLinkify.setMovementMethod(LinkMovementMethod.getInstance());
     }
+
+    /**
+     * Check if user logged in or not.
+     *
+     * @param context the context
+     * @return return true if user logged in
+     */
+    public static boolean isUserLogin(Context context) {
+        return PreferenceUtils.getUserId(context) != null;
+    }
 }

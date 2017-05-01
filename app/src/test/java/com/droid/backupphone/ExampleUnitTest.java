@@ -4,7 +4,6 @@ import com.droid.backupphone.helper.LoginHelper;
 
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -15,11 +14,9 @@ import static org.junit.Assert.assertTrue;
  */
 public class ExampleUnitTest {
 
-    @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
-    }
-
+    /**
+     * Test to check password for invalid input.
+     */
     @Test
     public void testValidatePasswordForInvalidCase() {
         assertFalse(LoginHelper.isPasswordValid(""));
@@ -29,6 +26,9 @@ public class ExampleUnitTest {
         assertFalse(LoginHelper.isPasswordValid("abcd"));
     }
 
+    /**
+     * Test to check password for valid input.
+     */
     @Test
     public void testValidatePasswordForValidCase() {
         assertTrue(LoginHelper.isPasswordValid("abcde"));
@@ -37,13 +37,18 @@ public class ExampleUnitTest {
         assertTrue(LoginHelper.isPasswordValid("1234567"));
     }
 
+    /**
+     * Test to check email for invalid input.
+     */
     @Test
     public void testValidateEmailForInvalidCase() {
         assertFalse(LoginHelper.isEmailValid(""));
         assertFalse(LoginHelper.isEmailValid("abc.g.com"));
-
     }
 
+    /**
+     * Test to check email for valid input.
+     */
     @Test
     public void testValidateEmailForValidCase() {
         assertTrue(LoginHelper.isEmailValid("abc@gmail.com"));

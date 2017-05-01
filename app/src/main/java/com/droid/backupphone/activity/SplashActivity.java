@@ -6,7 +6,7 @@ import android.os.Handler;
 
 import com.droid.backupphone.R;
 import com.droid.backupphone.activity.login.LoginActivity;
-import com.droid.backupphone.util.PreferenceUtils;
+import com.droid.backupphone.util.CommonUtils;
 
 /**
  * The app splash screen.
@@ -17,7 +17,7 @@ public class SplashActivity extends BaseActivity {
     private final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            if (PreferenceUtils.getUserId(getApplicationContext()) != null) {
+            if (CommonUtils.isUserLogin(getApplicationContext())) {
                 startNextActivity(DashboardActivity.class);
             } else {
                 startNextActivity(LoginActivity.class);

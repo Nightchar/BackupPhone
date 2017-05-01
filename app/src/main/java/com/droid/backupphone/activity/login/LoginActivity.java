@@ -93,9 +93,6 @@ public class LoginActivity extends BaseSignInSignUpActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO remove it after use
-        mEmailView.setText("abc@gmail.com");
-        mPasswordView.setText("123456");
     }
 
     @Override
