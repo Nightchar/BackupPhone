@@ -21,7 +21,7 @@
     <string name="signup_failed">SignUp Process failed</string>
     <string name="signup_success">Your account has been successfully created.</string>
     <string name="cancel">Cancel</string>
-    <string name="loading_msg">Please wait...</string>
+    <string name="loading_msg">Please wait&#8230;</string>
     <string name="list_empty">No data available</string>
 
     <!-- Dashboard screen-->
@@ -36,15 +36,23 @@
     <string name="title_activity_contact_sync">Contact Sync</string>
     <string name="phone_contact">Phone Contact</string>
     <string name="cloud_contact">Cloud Contact</string>
+    <string name="feature1">Feature1,</string>
+    <string name="feature2">Feature2,</string>
+    <string name="msg_phone_contact">Here, you can upload all your device contacts on Cloud Server by clicking on
+        \"Phone Contact\" button.</string>
+    <string name="msg_cloud_contact">To download contacts from Cloud Server please click on \"Cloud Contact\" button
+        .</string>
 
     <!-- PhoneDetail contact sync screen -->
     <string name="title_activity_phone_contact">Phone Contact</string>
     <string name="select_atleast_one">Please select at least one contact.</string>
-    <string name="contact_upload_success">Contacts has been uploaded successfully.\n\nHurray!</string>
-    <string name="err_contact_upload_fail">Contacts upload has been failed due to technical reason. Please Try
-        again later.\n\nSorry!</string>
+    <string name="contact_upload_success">Hurray!\n\nContacts has been uploaded successfully.</string>
+    <string name="err_contact_upload_fail">Sorry!\n\nContacts upload has been failed due to technical reason. Please
+        try again later.</string>
 
     <!-- Cloud contact sync screen -->
     <string name="title_activity_cloud_contact">Cloud Contact</string>
+    <string name="contact_write_success">Hurray!\n\nContact has been successfully added in your device.</string>
+    <string name="contact_write_partially_success">Sorry!\n\nFew contact are failed to add in your device.</string>
 
 </resources>

@@ -8,10 +8,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.ListView;
 
 import com.droid.backupphone.R;
-import com.droid.backupphone.adapter.MultiSelectListAdapter;
 import com.droid.backupphone.asynctask.contact.FetchDeviceContactAsyncTask;
 import com.droid.backupphone.helper.PhoneContactActivityHelper;
 import com.droid.backupphone.model.contact.Contact;
@@ -27,8 +25,8 @@ import java.util.List;
 
 public class PhoneContactActivity extends BaseContactActivity {
     private static final String TAG = "PhoneContactActivity";
-    private boolean onlyDeviceContact = false;
-    private MultiSelectListAdapter mListAdapter = null;
+    private boolean onlyDeviceContact = true;
+    private FetchDeviceContactAsyncTask mFetchDeviceContactAsyncTask = null;
 
     // the database reference till contact >> user+id
     private DatabaseReference mUserEndPoint = null;
@@ -117,9 +115,14 @@ public class PhoneContactActivity extends BaseContactActivity {
         removeDatabaseListener();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        nullifyAsyncTasks(mFetchDeviceContactAsyncTask);
+    }
+
     private void startDeviceContactTask() {
-        FetchDeviceContactAsyncTask fetchDeviceContactAsyncTask = new FetchDeviceContactAsyncTask(this,
-                onlyDeviceContact) {
+        mFetchDeviceContactAsyncTask = new FetchDeviceContactAsyncTask(this, onlyDeviceContact) {
 
             @Override
             protected void onPostExecute(List<Contact> contacts) {
@@ -131,15 +134,7 @@ public class PhoneContactActivity extends BaseContactActivity {
                 }
             }
         };
-        fetchDeviceContactAsyncTask.execute();
-    }
-
-    private void showContacts(List<Contact> contacts) {
-        mLvContact.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        mListAdapter = new MultiSelectListAdapter(this, android.R.layout.simple_list_item_multiple_choice, contacts);
-        mLvContact.setAdapter(mListAdapter);
-        mLvContact.setVisibility(View.VISIBLE);
-        mFabUploadDownload.setVisibility(View.VISIBLE);
+        mFetchDeviceContactAsyncTask.execute();
     }
 
     @Override

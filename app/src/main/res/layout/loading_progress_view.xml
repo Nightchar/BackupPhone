@@ -3,19 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/AllMatchParent"
     android:gravity="center_horizontal|center_vertical"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        style="@style/AllWrapContent"/>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/MatchParentWrapContent"
         android:gravity="center_horizontal"
         android:text="@string/loading_msg"
         android:layout_margin="@dimen/margin_normal"/>

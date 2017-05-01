@@ -9,17 +9,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.droid.backupphone.R;
+import com.droid.backupphone.activity.BaseActivity;
+import com.droid.backupphone.adapter.MultiSelectListAdapter;
+import com.droid.backupphone.model.contact.Contact;
+
+import java.util.List;
 
 /**
- * Created by nikhil1804 on 25-04-2017.
+ * The base class for {@link CloudContactActivity} and {@link PhoneContactActivity}
  */
-
-public class BaseContactActivity extends AppCompatActivity {
+public class BaseContactActivity extends BaseActivity {
 
     protected FloatingActionButton mFabUploadDownload = null;
     protected ListView mLvContact = null;
     protected TextView mTvNoData = null;
     protected View mLoadingProgress = null;
+    private MultiSelectListAdapter mListAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,14 @@ public class BaseContactActivity extends AppCompatActivity {
 
     protected void performUploadDownload(View view) {
         // do nothing
+    }
+
+    protected void showContacts(List<Contact> contacts) {
+        mLvContact.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mListAdapter = new MultiSelectListAdapter(this, android.R.layout.simple_list_item_multiple_choice, contacts);
+        mLvContact.setAdapter(mListAdapter);
+        mLvContact.setVisibility(View.VISIBLE);
+        mFabUploadDownload.setVisibility(View.VISIBLE);
     }
 
     protected void showProgress() {

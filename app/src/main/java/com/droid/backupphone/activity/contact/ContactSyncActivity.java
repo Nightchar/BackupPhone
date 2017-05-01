@@ -10,11 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.droid.backupphone.R;
+import com.droid.backupphone.activity.BaseActivity;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.droid.backupphone.common.CommonConstants.REQUEST_READ_CONTACT;
 
-public class ContactSyncActivity extends AppCompatActivity implements View.OnClickListener {
+public class ContactSyncActivity extends BaseActivity implements View.OnClickListener {
 
     private int mClickedButtonId = -1;
 

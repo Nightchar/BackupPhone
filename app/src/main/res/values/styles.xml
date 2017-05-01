@@ -24,6 +24,7 @@
         <item name="cardCornerRadius">@dimen/margin_small</item>
         <item name="cardPreventCornerOverlap">false</item>
         <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardElevation">@dimen/margin_normal</item>
     </style>
 
     <style name="AllMatchParent">
@@ -61,7 +62,7 @@
         <item name="android:layout_margin">20dip</item>
     </style>
 
-    <style name="BtnStyle">
+    <style name="BtnStyle" parent="MatchParentWrapContent">
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="android:textColor">@color/white</item>

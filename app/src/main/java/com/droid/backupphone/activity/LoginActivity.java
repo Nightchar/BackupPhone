@@ -32,7 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "LoginActivityTag";
 
     // UI references.
@@ -180,8 +180,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         // TODO remove it after use
-        //mEmailView.setText("abc@gmail.com");
-        //mPasswordView.setText("123456");
+        mEmailView.setText("abc@gmail.com");
+        mPasswordView.setText("123456");
     }
 
     @Override

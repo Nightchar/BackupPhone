@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.droid.backupphone.R;
 import com.droid.backupphone.util.PreferenceUtils;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     private Handler mSplashHandler = null;
     private final Runnable mRunnable = new Runnable() {
