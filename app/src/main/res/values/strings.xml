@@ -28,4 +28,13 @@
     <string name="sms">SMS</string>
     <string name="photos">Photos</string>
     <string name="videos">Videos</string>
+    <string name="title_activity_contact_sync">ContactSyncActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- COntact sync screen -->
+    <string name="phone_contact">Phone Contact</string>
+    <string name="cloud_contact">Cloud Contact</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -7,4 +7,5 @@
     <dimen name="margin_normal">8dp</dimen>
     <dimen name="margin_large">16dp</dimen>
     <dimen name="margin_small">2dp</dimen>
+    <dimen name="appbar_padding_top">8dp</dimen>
 </resources>

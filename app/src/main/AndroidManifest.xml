@@ -33,6 +33,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".activity.ContactSyncActivity"
+            android:label="@string/title_activity_contact_sync"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

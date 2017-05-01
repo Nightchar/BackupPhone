@@ -96,7 +96,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cv_contact:
-                Toast.makeText(this, "Feature Coming soon...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Feature Coming soon...", Toast.LENGTH_SHORT).show();
+                Intent contactIntent = new Intent(DashboardActivity.this, ContactSyncActivity.class);
+                startActivity(contactIntent);
                 break;
             case R.id.cv_sms:
                 Toast.makeText(this, "Feature Coming soon...", Toast.LENGTH_SHORT).show();

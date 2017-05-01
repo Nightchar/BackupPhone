@@ -2,4 +2,6 @@
 <resources>
     <!-- the Splash delay in milliseconds -->
     <string name="splash_time_delay">2000</string>
+
+    <integer name="password_max_length">16</integer>
 </resources>

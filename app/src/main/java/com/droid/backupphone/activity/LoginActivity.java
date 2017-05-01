@@ -18,18 +18,26 @@ import android.widget.EditText;
 
 import com.droid.backupphone.R;
 import com.droid.backupphone.common.CommonConstants;
+import com.droid.backupphone.helper.LoginHelper;
+import com.droid.backupphone.model.User;
 import com.droid.backupphone.util.CommonUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "LoginActivityTag";
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -41,7 +49,71 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private int mClickedButtonId = -1;
+    private DatabaseReference mDatabase;
+    private ValueEventListener valueEventListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            // This method is called once with the initial value and again
+            // whenever data at this location is updated.
+            //String value = dataSnapshot.getValue(String.class);
+            //Log.d(TAG, "Value is: " + value);
+            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                String response = dataSnapshot.getValue().toString();
+                Log.d("ValueEventListener", "Key : " + dataSnapshot.getKey());
+                Log.d("ValueEventListener", "Response : " + response);
 
+
+                if ("contacts".equals(dataSnapshot.getKey()) && dataSnapshot.getChildren() != null) {
+                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                        Log.d("ValueEventListener", "Key : " + postSnapshot.getKey());
+                        //String response1 = postSnapshot.getValue().toString();
+                        //Log.d("ValueEventListener", "Response : " + response1);
+
+                        for (DataSnapshot postSnapshot1 : postSnapshot.getChildren()) {
+                            User user = postSnapshot1.getValue(User.class);
+                            if (user != null) {
+                                Log.d("ValueEventListener", "user : " + user.getUsername() + "," + user.getEmail());
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError error) {
+            // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+        }
+    };
+
+    private ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+            Log.d("ChildEventListener", "onChildAdded:" + dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+            Log.d("ChildEventListener", "onChildChanged:" + dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            Log.d("ChildEventListener", "onChildRemoved:" + dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+            Log.d("ChildEventListener", "onChildMoved:" + dataSnapshot.getKey());
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +134,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+        setAuthListener();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        LoginHelper.setUpDataBase(mDatabase, valueEventListener, childEventListener);
+    }
 
+    private void setAuthListener() {
         // [START auth_state_listener]
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -70,9 +147,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    Log.d(TAG, "User Name :" + user.getDisplayName());
-                    Log.d(TAG, "User Id :" + user.getEmail());
+                    Log.d(TAG, "onAuthStateChanged:signed_in:");
+                    Log.d(TAG, "User Id : " + user.getUid());
+                    Log.d(TAG, "User Name : " + user.getDisplayName());
+                    Log.d(TAG, "User Email : " + user.getEmail());
 
                     switch (mClickedButtonId) {
                         case R.id.email_sign_in_button:
@@ -93,7 +171,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         };
-
     }
 
     @Override
@@ -115,6 +192,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onStop();
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
+        }
+
+        if (mDatabase != null) {
+            if (valueEventListener != null) {
+                mDatabase.removeEventListener(valueEventListener);
+            }
+
+            if (childEventListener != null) {
+                mDatabase.removeEventListener(childEventListener);
+            }
         }
     }
 
@@ -216,7 +303,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (TextUtils.isEmpty(password) || !isPasswordValid(password)) {
+        if (!LoginHelper.isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             valid = false;
@@ -227,7 +314,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             valid = false;
-        } else if (!isEmailValid(email)) {
+        } else if (!LoginHelper.isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             valid = false;
@@ -242,14 +329,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void clearCredentials() {
         // mEmailView.setText("");
         mPasswordView.setText("");
-    }
-
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
-
-    private boolean isPasswordValid(String password) {
-        return password.length() > 4;
     }
 
     /**
