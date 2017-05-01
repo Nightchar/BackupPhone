@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
 import com.droid.backupphone.R;
+import com.droid.backupphone.util.PreferenceUtils;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -13,7 +14,11 @@ public class SplashActivity extends AppCompatActivity {
     private final Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            startNextActivity(LoginActivity.class);
+            if (PreferenceUtils.getUserId(getApplicationContext()) != null) {
+                startNextActivity(DashboardActivity.class);
+            } else {
+                startNextActivity(LoginActivity.class);
+            }
         }
     };
 

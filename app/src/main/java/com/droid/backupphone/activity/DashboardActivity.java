@@ -3,7 +3,10 @@ package com.droid.backupphone.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,10 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.droid.backupphone.R;
-import com.droid.backupphone.common.CommonConstants;
+import com.droid.backupphone.activity.contact.ContactSyncActivity;
 import com.droid.backupphone.util.CommonUtils;
+import com.droid.backupphone.util.PreferenceUtils;
+
+import static android.Manifest.permission.READ_CONTACTS;
+import static com.droid.backupphone.common.CommonConstants.REQUEST_READ_CONTACT;
 
 public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +33,8 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            TextView tvUser = (TextView) findViewById(R.id.tv_user);
-            tvUser.setText(intent.getStringExtra(CommonConstants.USER_EMAIL));
-        }
+        TextView tvUser = (TextView) findViewById(R.id.tv_user);
+        tvUser.setText(PreferenceUtils.getUserEmail(getApplicationContext()));
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -85,6 +90,7 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 CommonUtils.signOutFromApp();
+                CommonUtils.logOut(DashboardActivity.this, getApplicationContext());
                 DashboardActivity.this.finish();
             }
         });
@@ -97,8 +103,9 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
         switch (view.getId()) {
             case R.id.cv_contact:
 //                Toast.makeText(this, "Feature Coming soon...", Toast.LENGTH_SHORT).show();
-                Intent contactIntent = new Intent(DashboardActivity.this, ContactSyncActivity.class);
-                startActivity(contactIntent);
+                if (mayRequestContacts()) {
+                    openContactSyncScreen();
+                }
                 break;
             case R.id.cv_sms:
                 Toast.makeText(this, "Feature Coming soon...", Toast.LENGTH_SHORT).show();
@@ -109,6 +116,35 @@ public class DashboardActivity extends AppCompatActivity implements View.OnClick
             case R.id.cv_videos:
                 Toast.makeText(this, "Feature Coming soon...", Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    private void openContactSyncScreen() {
+        Intent contactIntent = new Intent(DashboardActivity.this, ContactSyncActivity.class);
+        startActivity(contactIntent);
+    }
+
+    private boolean mayRequestContacts() {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+
+        requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACT);
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_READ_CONTACT) {
+            if (grantResults.length > 0 && READ_CONTACTS.equals(permissions[0])
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openContactSyncScreen();
+            }
         }
     }
 }

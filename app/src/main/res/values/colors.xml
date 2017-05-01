@@ -6,4 +6,5 @@
 
     <color name="splash_start">#ffffff</color>
     <color name="splash_end">#E4E4E4</color>
+    <color name="white">#FFFFFF</color>
 </resources>

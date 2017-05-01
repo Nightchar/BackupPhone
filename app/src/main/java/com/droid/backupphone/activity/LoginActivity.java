@@ -1,10 +1,6 @@
 package com.droid.backupphone.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -17,10 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.droid.backupphone.R;
-import com.droid.backupphone.common.CommonConstants;
 import com.droid.backupphone.helper.LoginHelper;
 import com.droid.backupphone.model.User;
 import com.droid.backupphone.util.CommonUtils;
+import com.droid.backupphone.util.PreferenceUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -49,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private int mClickedButtonId = -1;
-    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabaseReference;
     private ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -57,28 +53,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // whenever data at this location is updated.
             //String value = dataSnapshot.getValue(String.class);
             //Log.d(TAG, "Value is: " + value);
-            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
-                String response = dataSnapshot.getValue().toString();
-                Log.d("ValueEventListener", "Key : " + dataSnapshot.getKey());
-                Log.d("ValueEventListener", "Response : " + response);
+            if (dataSnapshot != null) {
+                if (dataSnapshot.getKey() != null && dataSnapshot.getValue() == null) {
+                    Log.d("ValueEventListener", "Account : " + dataSnapshot.getKey() + " does not exist.");
+                } else if (dataSnapshot.getValue() != null) {
+                    String response = dataSnapshot.getValue().toString();
+                    Log.d("ValueEventListener", "Key : " + dataSnapshot.getKey());
+                    Log.d("ValueEventListener", "Response : " + response);
 
 
-                if ("contacts".equals(dataSnapshot.getKey()) && dataSnapshot.getChildren() != null) {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Log.d("ValueEventListener", "Key : " + postSnapshot.getKey());
-                        //String response1 = postSnapshot.getValue().toString();
-                        //Log.d("ValueEventListener", "Response : " + response1);
+                    if ("contacts".equals(dataSnapshot.getKey()) && dataSnapshot.getChildren() != null) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            Log.d("ValueEventListener", "Key : " + postSnapshot.getKey());
+                            //String response1 = postSnapshot.getValue().toString();
+                            //Log.d("ValueEventListener", "Response : " + response1);
 
-                        for (DataSnapshot postSnapshot1 : postSnapshot.getChildren()) {
-                            User user = postSnapshot1.getValue(User.class);
-                            if (user != null) {
-                                Log.d("ValueEventListener", "user : " + user.getUsername() + "," + user.getEmail());
+                            for (DataSnapshot postSnapshot1 : postSnapshot.getChildren()) {
+                                User user = postSnapshot1.getValue(User.class);
+                                if (user != null) {
+                                    Log.d("ValueEventListener", "user : " + user.getUsername() + "," + user.getEmail());
+                                }
                             }
                         }
                     }
                 }
             }
-
         }
 
         @Override
@@ -120,23 +119,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mEmailView = (AutoCompleteTextView) findViewById(R.id.actv_email);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        Button emailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        Button emailLogInButton = (Button) findViewById(R.id.create_account_button);
+        mPasswordView = (EditText) findViewById(R.id.et_password);
+        Button emailSignInButton = (Button) findViewById(R.id.btn_email_sign_in);
+        Button emailLogInButton = (Button) findViewById(R.id.btn_create_account);
         emailSignInButton.setOnClickListener(this);
         emailLogInButton.setOnClickListener(this);
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mLoginFormView = findViewById(R.id.view_login_parent);
+        mProgressView = findViewById(R.id.view_login_progress);
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
         setAuthListener();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        LoginHelper.setUpDataBase(mDatabase, valueEventListener, childEventListener);
+        mDatabaseReference = FirebaseDatabase.getInstance().getReference();
+        LoginHelper.setUpDataBase(mDatabaseReference, valueEventListener, childEventListener);
     }
 
     private void setAuthListener() {
@@ -147,24 +146,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    String userId = user.getUid();
                     Log.d(TAG, "onAuthStateChanged:signed_in:");
-                    Log.d(TAG, "User Id : " + user.getUid());
+                    Log.d(TAG, "User Id : " + userId);
                     Log.d(TAG, "User Name : " + user.getDisplayName());
                     Log.d(TAG, "User Email : " + user.getEmail());
 
                     switch (mClickedButtonId) {
-                        case R.id.email_sign_in_button:
-                            Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
-                            intent.putExtra(CommonConstants.USER_EMAIL, user.getEmail());
-                            startActivity(intent);
+                        case R.id.btn_email_sign_in:
+                            if (userId != null && PreferenceUtils.saveUserId(getApplicationContext(), userId)) {
+                                PreferenceUtils.saveUserEmail(getApplicationContext(), user.getEmail());
+                                Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
+                                startActivity(intent);
+                            }
                             break;
-                        case R.id.create_account_button:
+                        case R.id.btn_create_account:
                             Snackbar snackbar = Snackbar.make(mLoginFormView, R.string.signup_success,
                                     Snackbar.LENGTH_LONG);
                             snackbar.show();
                             CommonUtils.signOutFromApp();
                             break;
                     }
+                    showProgress(false);
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -177,8 +180,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         // TODO remove it after use
-        mEmailView.setText("abc@gmail.com");
-        mPasswordView.setText("123456");
+        //mEmailView.setText("abc@gmail.com");
+        //mPasswordView.setText("123456");
     }
 
     @Override
@@ -194,13 +197,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mAuth.removeAuthStateListener(mAuthListener);
         }
 
-        if (mDatabase != null) {
+        if (mDatabaseReference != null) {
             if (valueEventListener != null) {
-                mDatabase.removeEventListener(valueEventListener);
+                mDatabaseReference.removeEventListener(valueEventListener);
             }
 
             if (childEventListener != null) {
-                mDatabase.removeEventListener(childEventListener);
+                mDatabaseReference.removeEventListener(childEventListener);
             }
         }
     }
@@ -210,10 +213,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         CommonUtils.hideSoftKeyboard(LoginActivity.this, view, 0);
         mClickedButtonId = view.getId();
         switch (view.getId()) {
-            case R.id.email_sign_in_button:
+            case R.id.btn_email_sign_in:
                 signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
                 break;
-            case R.id.create_account_button:
+            case R.id.btn_create_account:
                 createAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
                 break;
         }
@@ -247,9 +250,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     snackbar.dismiss();
                                 }
                             });
+                            showProgress(false);
                         }
-
-                        showProgress(false);
                     }
                 });
     }
@@ -282,9 +284,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     snackbar.dismiss();
                                 }
                             });
+                            showProgress(false);
                         }
-
-                        showProgress(false);
                     }
                 });
     }
@@ -334,37 +335,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 }
 

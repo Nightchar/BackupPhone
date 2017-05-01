@@ -6,6 +6,7 @@
     <string name="title_activity_login">Sign in</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -20,6 +21,8 @@
     <string name="signup_failed">SignUp Process failed</string>
     <string name="signup_success">Your account has been successfully created.</string>
     <string name="cancel">Cancel</string>
+    <string name="loading_msg">Please wait...</string>
+    <string name="list_empty">No data available</string>
 
     <!-- Dashboard screen-->
     <string name="logout_message">Do you really want to leave the authenticated area?</string>
@@ -28,13 +31,20 @@
     <string name="sms">SMS</string>
     <string name="photos">Photos</string>
     <string name="videos">Videos</string>
-    <string name="title_activity_contact_sync">ContactSyncActivity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 
-    <!-- COntact sync screen -->
+    <!-- Contact sync screen -->
+    <string name="title_activity_contact_sync">Contact Sync</string>
     <string name="phone_contact">Phone Contact</string>
     <string name="cloud_contact">Cloud Contact</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- PhoneDetail contact sync screen -->
+    <string name="title_activity_phone_contact">Phone Contact</string>
+    <string name="select_atleast_one">Please select at least one contact.</string>
+    <string name="contact_upload_success">Contacts has been uploaded successfully.\n\nHurray!</string>
+    <string name="err_contact_upload_fail">Contacts upload has been failed due to technical reason. Please Try
+        again later.\n\nSorry!</string>
+
+    <!-- Cloud contact sync screen -->
+    <string name="title_activity_cloud_contact">Cloud Contact</string>
+
 </resources>

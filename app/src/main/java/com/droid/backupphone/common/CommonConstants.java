@@ -5,6 +5,12 @@ package com.droid.backupphone.common;
  */
 
 public class CommonConstants {
+    public static final String IS_SIM = "is_sim";
 
-    public static final String USER_EMAIL = "USER_EMAIL";
+    public static final int REQUEST_READ_CONTACT = 1;
+
+
+    public static final String PREF_LOCALE_FILE = "PREF_LOCALE_FILE";
+    public static final String PREF_USER_ID = "PREF_USER_ID";
+    public static final String PREF_USER_EMAIL = "PREF_USER_EMAIL";
 }
