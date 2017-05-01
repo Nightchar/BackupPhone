@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.droid.backupphone.R;
+import com.droid.backupphone.activity.login.LoginActivity;
 import com.droid.backupphone.util.PreferenceUtils;
 
 /**

@@ -13,11 +13,11 @@
         android:icon="@drawable/setting_icon"
         android:orderInCategory="101"
         android:title="@string/action_settings"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_help"
         android:icon="@drawable/help_icon"
         android:orderInCategory="102"
         android:title="@string/action_help"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 </menu>

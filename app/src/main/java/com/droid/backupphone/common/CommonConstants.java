@@ -8,6 +8,9 @@ public class CommonConstants {
 
     public static final int REQUEST_READ_CONTACT = 1;
 
+    public static final String UNDER_LINE_OPEN_TAG = "<u>";
+    public static final String UNDER_LINE_CLOSE_TAG = "</u>";
+
     /**
      * The preference utils constants.
      */

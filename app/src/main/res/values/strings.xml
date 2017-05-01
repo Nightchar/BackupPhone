@@ -13,6 +13,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">SIGN IN</string>
     <string name="action_create_account">CREATE ACCOUNT</string>
+    <string name="dont_have_account">Don\'t have user account?</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -23,8 +24,10 @@
     <string name="cancel">Cancel</string>
     <string name="loading_msg">Please wait&#8230;</string>
     <string name="list_empty">No data available</string>
+    <string name="title_activity_signup">SignUp</string>
 
     <!-- Dashboard screen-->
+    <string name="title_activity_dashboard">Dashboard</string>
     <string name="logout_message">Do you really want to leave the authenticated area?</string>
     <string name="welcome">Welcome,</string>
     <string name="contacts">Contacts</string>
@@ -54,5 +57,6 @@
     <string name="title_activity_cloud_contact">Cloud Contact</string>
     <string name="contact_write_success">Hurray!\n\nContact has been successfully added in your device.</string>
     <string name="contact_write_partially_success">Sorry!\n\nFew contact are failed to add in your device.</string>
+    <string name="empty"/>
 
 </resources>

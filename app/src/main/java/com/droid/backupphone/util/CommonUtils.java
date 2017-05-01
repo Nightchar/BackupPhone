@@ -3,10 +3,17 @@ package com.droid.backupphone.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
-import com.droid.backupphone.activity.LoginActivity;
+import com.droid.backupphone.activity.login.LoginActivity;
+import com.droid.backupphone.activity.login.SignUpActvity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,6 +40,21 @@ public class CommonUtils {
         } else {
             inputManager.hideSoftInputFromWindow(null, flags);
         }
+    }
+
+    /**
+     * Concatenate the elements of string array to one string.
+     *
+     * @param args the passed string arguments to be concatenated
+     * @return the concatenated string
+     */
+    public static String concatenateString(Object... args) {
+        StringBuilder sbConcatenated = new StringBuilder();
+
+        for (Object arg : args) {
+            sbConcatenated.append(arg);
+        }
+        return sbConcatenated.toString();
     }
 
     /**
@@ -99,5 +121,39 @@ public class CommonUtils {
         Intent intentNextActivity = new Intent(activity, LoginActivity.class);
         intentNextActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         activity.startActivity(intentNextActivity);
+    }
+
+    /**
+     * Function linkify a text view and make a phone call on touch.
+     *
+     * @param context   the context
+     * @param tvLinkify Linkify text view
+     * @param sequence  Spanned sequence
+     */
+    public static void linkifyCallTextView(final Context context, TextView tvLinkify, Spanned sequence) {
+        ClickableSpan clickableSpan;
+        int start;
+        int end;
+        int flags;
+
+        SpannableStringBuilder strBuilder = new SpannableStringBuilder(sequence);
+        UnderlineSpan[] underlines = strBuilder.getSpans(0, sequence.length(), UnderlineSpan.class);
+
+        for (UnderlineSpan span : underlines) {
+            start = strBuilder.getSpanStart(span);
+            end = strBuilder.getSpanEnd(span);
+            flags = strBuilder.getSpanFlags(span);
+            clickableSpan = new ClickableSpan() {
+                public void onClick(View view) {
+                    Intent callIntent = new Intent(context, SignUpActvity.class);
+                    context.startActivity(callIntent);
+                }
+            };
+
+            strBuilder.setSpan(clickableSpan, start, end, flags);
+        }
+
+        tvLinkify.setText(strBuilder);
+        tvLinkify.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
