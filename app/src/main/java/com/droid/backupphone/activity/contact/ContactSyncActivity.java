@@ -5,7 +5,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -15,6 +14,9 @@ import com.droid.backupphone.activity.BaseActivity;
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.droid.backupphone.common.CommonConstants.REQUEST_READ_CONTACT;
 
+/**
+ * The class used to choose option to perform upload and download contact from cloud server to user device.
+ */
 public class ContactSyncActivity extends BaseActivity implements View.OnClickListener {
 
     private int mClickedButtonId = -1;
@@ -45,6 +47,7 @@ public class ContactSyncActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    // check for contact permission
     private boolean mayRequestContacts() {
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
@@ -69,6 +72,7 @@ public class ContactSyncActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
+    // open next screen based on clicked button id.
     protected void openNextScreen() {
         switch (mClickedButtonId) {
             case R.id.btn_phone_contact:

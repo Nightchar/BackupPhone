@@ -2,7 +2,6 @@ package com.droid.backupphone.activity.contact;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
@@ -46,10 +45,12 @@ public class BaseContactActivity extends BaseActivity {
         mLoadingProgress = findViewById(R.id.view_contact_progress);
     }
 
+    // the method detail is given in subclasses.
     protected void performUploadDownload(View view) {
         // do nothing
     }
 
+    // show list of contacts in list view.
     protected void showContacts(List<Contact> contacts) {
         mLvContact.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         mListAdapter = new MultiSelectListAdapter(this, android.R.layout.simple_list_item_multiple_choice, contacts);
@@ -58,12 +59,14 @@ public class BaseContactActivity extends BaseActivity {
         mFabUploadDownload.setVisibility(View.VISIBLE);
     }
 
+    // show progress bar & hide other UI components
     protected void showProgress() {
         mFabUploadDownload.setVisibility(View.GONE);
         mLvContact.setVisibility(View.GONE);
         mLoadingProgress.setVisibility(View.VISIBLE);
     }
 
+    // hide progress bar and show other UI components
     protected void hideProgress() {
         mFabUploadDownload.setVisibility(View.VISIBLE);
         mLvContact.setVisibility(View.VISIBLE);

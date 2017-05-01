@@ -15,23 +15,23 @@ import java.util.List;
 import static com.droid.backupphone.common.CommonConstants.IS_SIM;
 
 /**
- * Created by nikhil1804 on 25-04-2017.
+ * The async task class to fetch all the device contacts.
  */
-
 public class FetchDeviceContactAsyncTask extends AsyncTask<Void, Void, List<Contact>> {
 
     private final String TAG = "FetchDeviceContactTask";
     private Context mContext = null;
     private boolean mIsOnlyDeviceContact = false;
 
+    /**
+     * The constructor.
+     *
+     * @param context           the context
+     * @param onlyDeviceContact fetch only device contact or sim contact as well
+     */
     public FetchDeviceContactAsyncTask(Context context, boolean onlyDeviceContact) {
         mContext = context;
         mIsOnlyDeviceContact = onlyDeviceContact;
-    }
-
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     @Override

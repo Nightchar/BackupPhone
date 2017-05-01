@@ -1,9 +1,8 @@
 package com.droid.backupphone.model.contact;
 
 /**
- * Created by nikhil1804 on 24-04-2017.
+ * The phone detail model class.
  */
-
 public class PhoneDetail {
 
     private int mPhoneType;
@@ -11,7 +10,7 @@ public class PhoneDetail {
     private String mPhoneNumber;
 
     public PhoneDetail() {
-
+        // do nothing
     }
 
     public PhoneDetail(int phoneType, String phoneNumber) {

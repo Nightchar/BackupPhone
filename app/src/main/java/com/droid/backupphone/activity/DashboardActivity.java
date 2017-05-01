@@ -22,8 +22,10 @@ import com.droid.backupphone.util.PreferenceUtils;
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.droid.backupphone.common.CommonConstants.REQUEST_READ_CONTACT;
 
+/**
+ * Dashboard activity to show all possible type of backup options.
+ */
 public class DashboardActivity extends BaseActivity implements View.OnClickListener {
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +37,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         TextView tvUser = (TextView) findViewById(R.id.tv_user);
         tvUser.setText(PreferenceUtils.getUserEmail(getApplicationContext()));
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
         findViewById(R.id.cv_contact).setOnClickListener(this);
         findViewById(R.id.cv_sms).setOnClickListener(this);
         findViewById(R.id.cv_photos).setOnClickListener(this);
@@ -53,7 +46,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_dashboard, menu);
         return true;
     }
@@ -61,7 +53,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case R.id.action_logout:
                 showLogOutDialog();
                 break;
@@ -80,6 +71,7 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         showLogOutDialog();
     }
 
+    // Show log out option to the user with Yes/No option.
     private void showLogOutDialog() {
         AlertDialog.Builder logoutAlertDialog = new AlertDialog.Builder(DashboardActivity.this);
         logoutAlertDialog.setMessage(R.string.logout_message);
@@ -101,7 +93,6 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cv_contact:
-//                Toast.makeText(this, "Feature Coming soon...", Toast.LENGTH_SHORT).show();
                 if (mayRequestContacts()) {
                     openContactSyncScreen();
                 }
@@ -118,11 +109,13 @@ public class DashboardActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+    // Open contact sync screen
     private void openContactSyncScreen() {
         Intent contactIntent = new Intent(DashboardActivity.this, ContactSyncActivity.class);
         startActivity(contactIntent);
     }
 
+    // check for contact permission
     private boolean mayRequestContacts() {
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {

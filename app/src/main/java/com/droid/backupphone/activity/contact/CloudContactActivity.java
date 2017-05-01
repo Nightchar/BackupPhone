@@ -11,10 +11,9 @@ import android.view.View;
 
 import com.droid.backupphone.R;
 import com.droid.backupphone.asynctask.contact.WriteDeviceContactAsyncTask;
-import com.droid.backupphone.helper.PhoneContactActivityHelper;
+import com.droid.backupphone.helper.DatabaseHelper;
 import com.droid.backupphone.model.contact.Contact;
 import com.droid.backupphone.util.CommonUtils;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,38 +22,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The activity class used to download cloud server contacts and write on device.
+ */
 public class CloudContactActivity extends BaseContactActivity {
 
     private static final String TAG = "CloudContactActivity";
     // the database reference till contact >> user+id
     private DatabaseReference mUserEndPoint = null;
     private WriteDeviceContactAsyncTask mWriteDeviceContactAsyncTask = null;
-    private ChildEventListener childEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-            Log.d(TAG, "ChildEventListener : " + "onChildAdded:" + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-            Log.d(TAG, "ChildEventListener : " + "onChildChanged:" + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-            Log.d(TAG, "ChildEventListener : " + "onChildRemoved:" + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-            Log.d(TAG, "ChildEventListener : " + "onChildMoved:" + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    };
 
     private ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -71,7 +47,6 @@ public class CloudContactActivity extends BaseContactActivity {
                     Log.d(TAG, "ValueEventListener : " + "Key : " + dataSnapshot.getKey());
                     Log.d(TAG, "ValueEventListener : " + "Response : " + response);
 
-                    // TODO parse this data to Contact list and call showContacts() method
                     if (dataSnapshot.getChildren() != null) {
                         List<Contact> contacts = new ArrayList<>();
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -116,10 +91,11 @@ public class CloudContactActivity extends BaseContactActivity {
         nullifyAsyncTasks(mWriteDeviceContactAsyncTask);
     }
 
+    // start fetching contacts from cloud server
     private void startCloudContactDownloadTask() {
         String userId = CommonUtils.getUserId(CloudContactActivity.this, getApplicationContext());
         if (userId != null) {
-            mUserEndPoint = PhoneContactActivityHelper.getUserEndPoint(userId);
+            mUserEndPoint = DatabaseHelper.getUserEndPoint(userId);
             addDatabaseListener();
             showProgress();
             // perform a sample write operation on cloud and you will get the data in listener
@@ -127,19 +103,16 @@ public class CloudContactActivity extends BaseContactActivity {
         }
     }
 
+    // add database listener
     private void addDatabaseListener() {
         mUserEndPoint.addValueEventListener(valueEventListener);
-        mUserEndPoint.addChildEventListener(childEventListener);
     }
 
+    // remove database listener
     private void removeDatabaseListener() {
         if (mUserEndPoint != null) {
             if (valueEventListener != null) {
                 mUserEndPoint.removeEventListener(valueEventListener);
-            }
-
-            if (childEventListener != null) {
-                mUserEndPoint.removeEventListener(childEventListener);
             }
         }
     }
@@ -168,6 +141,7 @@ public class CloudContactActivity extends BaseContactActivity {
         }
     }
 
+    // start async task to write selected cloud contacts in device
     private void writeContactsInDevice(final List<Contact> selectedContacts) {
         mWriteDeviceContactAsyncTask = new WriteDeviceContactAsyncTask(getApplicationContext(), selectedContacts) {
 
@@ -186,6 +160,7 @@ public class CloudContactActivity extends BaseContactActivity {
         mWriteDeviceContactAsyncTask.execute();
     }
 
+    // show confirmation dialog, whether contacts written on device successfully or not
     private void showConfirmationDialog(boolean uploadSuccessful) {
         AlertDialog.Builder uploadAlertDialog = new AlertDialog.Builder(this);
         if (uploadSuccessful) {

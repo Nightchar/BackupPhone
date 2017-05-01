@@ -30,22 +30,19 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.contact.ContactSyncActivity"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_contact_sync"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.contact.PhoneContactActivity"
             android:label="@string/title_activity_phone_contact"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".activity.contact.CloudContactActivity"
             android:label="@string/title_activity_cloud_contact"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

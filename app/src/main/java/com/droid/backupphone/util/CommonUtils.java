@@ -14,11 +14,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.Collection;
 
 /**
- * Created by nikhil1804 on 17-04-2017.
+ * The common utils class.
  */
-
 public class CommonUtils {
 
+    /**
+     * Hides the keyboard.
+     *
+     * @param context the context
+     * @param view    the view that is making request.
+     * @param flags   Provides additional operating flags. Currently may be 0 or have the HIDE_IMPLICIT_ONLY bit set.
+     */
     public static void hideSoftKeyboard(Context context, View view, int flags) {
         InputMethodManager inputManager = (InputMethodManager) context.getSystemService(
                 Context.INPUT_METHOD_SERVICE);
@@ -29,6 +35,9 @@ public class CommonUtils {
         }
     }
 
+    /**
+     * The method to sign out from Firebase auth.
+     */
     public static void signOutFromApp() {
         FirebaseAuth.getInstance().signOut();
     }
@@ -44,14 +53,31 @@ public class CommonUtils {
         return (collection == null || collection.isEmpty());
     }
 
+    /**
+     * Method to get firebase database parent reference.
+     *
+     * @return the firebase database parent reference
+     */
     public static DatabaseReference getDatabaseReference() {
         return FirebaseDatabase.getInstance().getReference();
     }
 
+    /**
+     * Method to get firebase database reference of contact end point.
+     *
+     * @return the firebase database reference of contact end point
+     */
     public static DatabaseReference getContactEndPoint() {
         return getDatabaseReference().child("contacts");
     }
 
+    /**
+     * Get user id from shared preference else logout.
+     *
+     * @param activity           the source activity reference
+     * @param applicationContext the application context
+     * @return return the user id of login session, saved in shared preference
+     */
     public static String getUserId(Activity activity, Context applicationContext) {
         String userId = PreferenceUtils.getUserId(applicationContext);
         if (userId == null) {
@@ -61,6 +87,12 @@ public class CommonUtils {
         return userId;
     }
 
+    /**
+     * Logout user and move to login screen.
+     *
+     * @param activity           the activity reference
+     * @param applicationContext the application context
+     */
     public static void logOut(Activity activity, Context applicationContext) {
         PreferenceUtils.removeUserId(applicationContext);
         PreferenceUtils.removeUserEmail(applicationContext);

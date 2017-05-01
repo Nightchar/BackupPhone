@@ -3,11 +3,13 @@ package com.droid.backupphone.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 
 import com.droid.backupphone.R;
 import com.droid.backupphone.util.PreferenceUtils;
 
+/**
+ * The app splash screen.
+ */
 public class SplashActivity extends BaseActivity {
 
     private Handler mSplashHandler = null;
@@ -36,7 +38,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     /*
-     * The method to push next activity(home or app demo) to the top of the activity stack clearing other activities at
+     * The method to push next activity to the top of the activity stack clearing other activities at
      * its top.
      */
     private void startNextActivity(Class<?> cls) {

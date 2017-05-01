@@ -3,9 +3,8 @@ package com.droid.backupphone.model.contact;
 import java.util.List;
 
 /**
- * Created by nikhil1804 on 24-04-2017.
+ * The contact model class.
  */
-
 public class Contact {
 
     private String mId;
@@ -13,7 +12,7 @@ public class Contact {
     private List<PhoneDetail> mPhoneList;
 
     public Contact() {
-
+        // do nothing
     }
 
     public Contact(String id, String contactName, List<PhoneDetail> phoneList) {

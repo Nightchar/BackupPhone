@@ -12,7 +12,7 @@ import com.droid.backupphone.model.contact.Contact;
 import java.util.List;
 
 /**
- *
+ * The list adapter for multi select ListView.
  */
 public class MultiSelectListAdapter extends ArrayAdapter<Contact> {
     private LayoutInflater mInflater;
@@ -42,6 +42,7 @@ public class MultiSelectListAdapter extends ArrayAdapter<Contact> {
         return view;
     }
 
+    // The view holder class
     private static class ViewHolder {
         CheckedTextView itemName;
     }

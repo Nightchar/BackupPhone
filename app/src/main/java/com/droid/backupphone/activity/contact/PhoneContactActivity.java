@@ -11,10 +11,9 @@ import android.view.View;
 
 import com.droid.backupphone.R;
 import com.droid.backupphone.asynctask.contact.FetchDeviceContactAsyncTask;
-import com.droid.backupphone.helper.PhoneContactActivityHelper;
+import com.droid.backupphone.helper.DatabaseHelper;
 import com.droid.backupphone.model.contact.Contact;
 import com.droid.backupphone.util.CommonUtils;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,40 +22,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The class is used to fetch device contacts and upload selected contact on cloud server.
+ */
 public class PhoneContactActivity extends BaseContactActivity {
     private static final String TAG = "PhoneContactActivity";
-    private boolean onlyDeviceContact = true;
+    private boolean isOnlyDeviceContact = true;
     private FetchDeviceContactAsyncTask mFetchDeviceContactAsyncTask = null;
 
     // the database reference till contact >> user+id
     private DatabaseReference mUserEndPoint = null;
-
-    private ChildEventListener childEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-            Log.d(TAG, "ChildEventListener : " + "onChildAdded:" + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-            Log.d(TAG, "ChildEventListener : " + "onChildChanged:" + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
-            Log.d(TAG, "ChildEventListener : " + "onChildRemoved:" + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
-            Log.d(TAG, "ChildEventListener : " + "onChildMoved:" + dataSnapshot.getKey());
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-
-        }
-    };
 
     private ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -73,19 +48,6 @@ public class PhoneContactActivity extends BaseContactActivity {
                     String response = dataSnapshot.getValue().toString();
                     Log.d(TAG, "ValueEventListener : " + "Key : " + dataSnapshot.getKey());
                     Log.d(TAG, "ValueEventListener : " + "Response : " + response);
-
-
-                    if (dataSnapshot.getChildren() != null) {
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                            Log.d(TAG, "ValueEventListener : " + "Key : " + postSnapshot.getKey());
-
-                            Contact contact = postSnapshot.getValue(Contact.class);
-                            if (contact != null) {
-                                Log.d(TAG, "ValueEventListener : " + "contact : " + contact.getContactName() + "," +
-                                        contact.getId());
-                            }
-                        }
-                    }
                 } else {
                     showConfirmationDialog(false);
                 }
@@ -121,8 +83,9 @@ public class PhoneContactActivity extends BaseContactActivity {
         nullifyAsyncTasks(mFetchDeviceContactAsyncTask);
     }
 
+    // start async task to fetch the contact list from device.
     private void startDeviceContactTask() {
-        mFetchDeviceContactAsyncTask = new FetchDeviceContactAsyncTask(this, onlyDeviceContact) {
+        mFetchDeviceContactAsyncTask = new FetchDeviceContactAsyncTask(this, isOnlyDeviceContact) {
 
             @Override
             protected void onPostExecute(List<Contact> contacts) {
@@ -161,33 +124,32 @@ public class PhoneContactActivity extends BaseContactActivity {
         }
     }
 
+    // method performs operation on cloud server to upload selected contacts
     private void uploadContactsToCloud(List<Contact> selectedContacts) {
         String userId = CommonUtils.getUserId(PhoneContactActivity.this, getApplicationContext());
         if (userId != null) {
-            mUserEndPoint = PhoneContactActivityHelper.getUserEndPoint(userId);
-            PhoneContactActivityHelper.writeNewUser(mUserEndPoint, userId, selectedContacts);
+            mUserEndPoint = DatabaseHelper.getUserEndPoint(userId);
+            DatabaseHelper.writeNewContact(mUserEndPoint, selectedContacts);
             addDatabaseListener();
             showProgress();
         }
     }
 
+    // add database listener
     private void addDatabaseListener() {
         mUserEndPoint.addValueEventListener(valueEventListener);
-        mUserEndPoint.addChildEventListener(childEventListener);
     }
 
+    // remove database listener
     private void removeDatabaseListener() {
         if (mUserEndPoint != null) {
             if (valueEventListener != null) {
                 mUserEndPoint.removeEventListener(valueEventListener);
             }
-
-            if (childEventListener != null) {
-                mUserEndPoint.removeEventListener(childEventListener);
-            }
         }
     }
 
+    // show confirmation dialog, whether contacts uploaded on cloud server successfully or not
     private void showConfirmationDialog(boolean uploadSuccessful) {
         AlertDialog.Builder uploadAlertDialog = new AlertDialog.Builder(this);
         if (uploadSuccessful) {

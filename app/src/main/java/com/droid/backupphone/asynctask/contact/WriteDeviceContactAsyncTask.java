@@ -9,7 +9,7 @@ import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.droid.backupphone.helper.PhoneContactActivityHelper;
+import com.droid.backupphone.helper.DatabaseHelper;
 import com.droid.backupphone.model.contact.Contact;
 import com.droid.backupphone.model.contact.PhoneDetail;
 
@@ -17,15 +17,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by nikhil1804 on 26-04-2017.
+ * The async task class to write a list of contacts on user device.
  */
-
 public class WriteDeviceContactAsyncTask extends AsyncTask<Void, Void, Integer> {
 
     private static final String TAG = "WriteDeviceContactTask";
     private List<Contact> mSelectedContacts = null;
     private Context mApplicationContext = null;
 
+    /**
+     * The constructor.
+     *
+     * @param applicationContext the application context
+     * @param selectedContacts   the list of selected contact to write on device
+     */
     public WriteDeviceContactAsyncTask(Context applicationContext, List<Contact> selectedContacts) {
         mApplicationContext = applicationContext;
         mSelectedContacts = selectedContacts;
@@ -43,11 +48,11 @@ public class WriteDeviceContactAsyncTask extends AsyncTask<Void, Void, Integer> 
                     .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null).build());
 
             //Display name will be inserted in ContactsContract.Data table
-            contentProviderOperations.add(PhoneContactActivityHelper.getAddNameOperation(contactIndex, contact
+            contentProviderOperations.add(DatabaseHelper.getAddNameOperation(contactIndex, contact
                     .getContactName()));
 
             for (PhoneDetail phoneDetail : contact.getPhoneList()) {
-                contentProviderOperations.add(PhoneContactActivityHelper.getAddPhoneOperation(contactIndex,
+                contentProviderOperations.add(DatabaseHelper.getAddPhoneOperation(contactIndex,
                         phoneDetail.getPhoneNumber(), phoneDetail.getPhoneType()));
             }
             try {

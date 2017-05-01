@@ -3,7 +3,6 @@ package com.droid.backupphone.helper;
 import android.content.ContentProviderOperation;
 import android.provider.ContactsContract;
 
-import com.droid.backupphone.model.User;
 import com.droid.backupphone.model.contact.Contact;
 import com.droid.backupphone.util.CommonUtils;
 import com.google.firebase.database.DatabaseReference;
@@ -11,29 +10,53 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.List;
 
 /**
- * Created by nikhil1804 on 25-04-2017.
+ * The helper class for database.
  */
+public class DatabaseHelper {
 
-public class PhoneContactActivityHelper {
-
-    public static void updateUser(DatabaseReference databaseReference, User user) {
-        databaseReference.child("contacts").child("user3").child(user.getUsername()).setValue(user);
+    /**
+     * Update user contact.
+     *
+     * @param userEndPoint the database reference till contact >> user+id
+     * @param contact      the contact
+     */
+    public static void updateContact(DatabaseReference userEndPoint, Contact contact) {
+        userEndPoint.child(contact.getContactName()).setValue(contact);
     }
 
-    public static void deleteUser(DatabaseReference databaseReference, String user) {
-        databaseReference.child("contacts").child("user3").child(user).removeValue();
+    /**
+     * Delete user contact.
+     *
+     * @param userEndPoint the database reference till contact >> user+id
+     * @param contact      the contact
+     */
+    public static void deleteContact(DatabaseReference userEndPoint, Contact contact) {
+        userEndPoint.child(contact.getContactName()).removeValue();
     }
 
-    public static void writeNewUser(DatabaseReference userEndPoint, String userId, List<Contact> contacts) {
+    /**
+     * Add new user contact
+     *
+     * @param userEndPoint the database reference till contact >> user+id
+     * @param contacts     the contact list
+     */
+    public static void writeNewContact(DatabaseReference userEndPoint, List<Contact> contacts) {
         for (Contact contact : contacts) {
             userEndPoint.child(contact.getContactName()).setValue(contact);
         }
     }
 
+    /**
+     * Get the database reference till contact >> user+id
+     *
+     * @param userId the user id
+     * @return the database reference
+     */
     public static DatabaseReference getUserEndPoint(String userId) {
         return CommonUtils.getContactEndPoint().child("user" + userId);
     }
 
+    // common method to create an operation.
     private static ContentProviderOperation getContentProviderOperation(Integer contactRawId, String mimeType,
                                                                         String whatToAdd, String data,
                                                                         String typeKey, int type) {
@@ -56,6 +79,13 @@ public class PhoneContactActivityHelper {
         return contentProviderOperation.build();
     }
 
+    /**
+     * Method to get Add Name operation.
+     *
+     * @param contactRawId   the contact id
+     * @param strDisplayName the display name
+     * @return return Add Name operation
+     */
     public static ContentProviderOperation getAddNameOperation(int contactRawId, String strDisplayName) {
         return getContentProviderOperation(contactRawId,
                 ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE,
@@ -65,11 +95,19 @@ public class PhoneContactActivityHelper {
                 -1);
     }
 
-    public static ContentProviderOperation getAddPhoneOperation(Integer contactRawId, String strNumber, int type) {
+    /**
+     * Method to get Add Phone operation.
+     *
+     * @param contactRawId the contact id
+     * @param number       the number
+     * @param type         the phone number type (Home, Work, others)
+     * @return return Add Phone operation
+     */
+    public static ContentProviderOperation getAddPhoneOperation(Integer contactRawId, String number, int type) {
         return getContentProviderOperation(contactRawId,
                 ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE,
                 ContactsContract.CommonDataKinds.Phone.NUMBER,
-                strNumber,
+                number,
                 ContactsContract.CommonDataKinds.Phone.TYPE,
                 type);
     }
