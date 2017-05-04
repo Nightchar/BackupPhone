@@ -90,25 +90,6 @@ public class LoginActivity extends BaseSignInSignUpActivity {
         };
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
     // perform login operation
     private void signIn(String email, String password) {
         Log.d(TAG, "signIn:" + email);
