@@ -5,6 +5,7 @@
     <string name="action_select_all">Select all</string>
     <string name="action_help">Help</string>
     <string name="title_activity_login">Sign in</string>
+
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="ok">OK</string>
@@ -13,7 +14,9 @@
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">SIGN IN</string>
+    <string name="action_forget_password">Forgot Password?</string>
     <string name="action_create_account">CREATE ACCOUNT</string>
+    <string name="action_reset_password">RESET PASSWORD</string>
     <string name="dont_have_account">Don\'t have user account?</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>

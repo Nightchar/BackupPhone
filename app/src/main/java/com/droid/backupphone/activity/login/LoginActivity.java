@@ -26,18 +26,17 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BaseSignInSignUpActivity {
+public class LoginActivity extends BaseSignInSignUpActivity implements View.OnClickListener {
     private static final String TAG = "LoginActivityTag";
 
     private View mLoginFormView;
 
-    private View.OnClickListener mSignInBtnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            CommonUtils.hideSoftKeyboard(LoginActivity.this, view, 0);
-            signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
-        }
-    };
+//    private View.OnClickListener mSignInBtnClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View view) {
+//
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,8 @@ public class LoginActivity extends BaseSignInSignUpActivity {
         mEmailView = (AutoCompleteTextView) findViewById(R.id.actv_email);
         mPasswordView = (EditText) findViewById(R.id.et_password);
 
-        findViewById(R.id.btn_email_sign_in).setOnClickListener(mSignInBtnClickListener);
+        findViewById(R.id.btn_email_sign_in).setOnClickListener(this);
+        findViewById(R.id.tv_forget_password).setOnClickListener(this);
 
 
         mLoginFormView = findViewById(R.id.view_login_parent);
@@ -131,6 +131,23 @@ public class LoginActivity extends BaseSignInSignUpActivity {
     private void showProgress(final boolean show) {
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int clickId = v.getId();
+        switch (clickId)
+        {
+            case R.id.tv_forget_password :
+                CommonUtils.hideSoftKeyboard(LoginActivity.this, v, 0);
+                Intent intent = new Intent(LoginActivity.this, ForgetPasswordActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.btn_email_sign_in :
+                CommonUtils.hideSoftKeyboard(LoginActivity.this, v, 0);
+                signIn(mEmailView.getText().toString(), mPasswordView.getText().toString());
+                break;
+        }
     }
 }
 
