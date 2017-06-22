@@ -85,36 +85,20 @@ public class MultiSelectContactListAdapter extends BaseAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (checkedHolder[position]) {
-                    setCheckHolder(position, false);
-                    final ViewHolder tempHolder = (ViewHolder) v.getTag();
-                    tempHolder.contact_cb.setChecked(false);
-                    v.invalidate();
-                } else {
-                    setCheckHolder(position, true);
-                    final ViewHolder tempHolder = (ViewHolder) v.getTag();
-                    tempHolder.contact_cb.setChecked(true);
-                    v.invalidate();
-                }
-
+                Log.d("check","on listener " + " : "  + checkedHolder[position]);
+                setCheckHolder(position, !checkedHolder[position]);
+                ((ViewHolder) v.getTag()).contact_cb.setChecked(checkedHolder[position]);
+                v.invalidate();
             }
         });
-        holder.contact_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        holder.contact_cb.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                Log.d("check","on listener " + isChecked + " : "  + checkedHolder[position]);
-
-
-                setCheckHolder(position, isChecked);
-                holder.contact_cb.setChecked(isChecked);
-               
-
+            public void onClick(View v) {
+                View parent = (View) v.getParent();
+                parent.performClick();
             }
         });
-
-
         return view;
     }
 

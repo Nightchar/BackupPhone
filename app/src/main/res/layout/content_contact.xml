@@ -27,6 +27,7 @@
             android:id="@+id/cb_contact"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:clickable="true"
             style="@style/AllWrapContent"/>
 
 </RelativeLayout>
