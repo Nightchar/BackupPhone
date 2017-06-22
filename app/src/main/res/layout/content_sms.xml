@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/MatchParentWrapContent"
+                android:gravity="center"
+                android:layout_margin="@dimen/margin_small"
+                android:orientation="vertical">
+
+    <LinearLayout style="@style/AllWrapContent"
+                  android:orientation="vertical"
+                  android:layout_alignParentLeft="true"
+                  android:layout_toRightOf="@+id/cb_sms"
+    >
+
+        <TextView
+                android:id="@+id/tv_sms_address"
+                style="@style/PhoneSmsAddress"
+
+                android:textColor="@color/contact_phone_name"
+        />
+        <TextView
+                android:id="@+id/tv_sms_date"
+                style="@style/PhoneSmsDate"
+                android:textColor="@color/contact_phone_name"
+        />
+
+        <TextView
+                android:id="@+id/tv_sms_message"
+                style="@style/PhoneSmsMessage"
+                android:textColor="@color/contact_phone_number"
+        />
+    </LinearLayout>
+
+    <CheckBox
+            android:id="@+id/cb_sms"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            style="@style/AllWrapContent"/>
+
+</RelativeLayout>

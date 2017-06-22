@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/MatchParentWrapContent"
+                android:gravity="center"
+                android:layout_margin="@dimen/margin_small"
+                android:orientation="vertical">
+
+    <LinearLayout style="@style/AllWrapContent"
+                  android:orientation="vertical"
+                  android:layout_alignParentLeft="true"
+    >
+
+        <TextView
+                android:id="@+id/tv_contact_name"
+                style="@style/PhoneContactText"
+                android:textColor="@color/contact_phone_name"
+        />
+
+        <TextView
+                android:id="@+id/tv_contact_number"
+                style="@style/PhoneNumberText"
+                android:textColor="@color/contact_phone_number"
+        />
+    </LinearLayout>
+
+    <CheckBox
+            android:id="@+id/cb_contact"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            style="@style/AllWrapContent"/>
+
+</RelativeLayout>

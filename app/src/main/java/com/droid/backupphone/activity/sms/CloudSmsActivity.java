@@ -1,4 +1,4 @@
-package com.droid.backupphone.activity.contact;
+package com.droid.backupphone.activity.sms;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,11 +8,9 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
-
 import com.droid.backupphone.R;
-import com.droid.backupphone.asynctask.contact.WriteDeviceContactAsyncTask;
 import com.droid.backupphone.helper.DatabaseHelper;
-import com.droid.backupphone.model.contact.Contact;
+import com.droid.backupphone.model.sms.Sms;
 import com.droid.backupphone.util.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,12 +23,11 @@ import java.util.List;
 /**
  * The activity class used to download cloud server contacts and write on device.
  */
-public class CloudContactActivity extends BaseContactActivity {
+public class CloudSmsActivity extends BaseSmsActivity {
 
-    private static final String TAG = "CloudContactActivity";
+    private static final String TAG = "CloudSmsActivity";
     // the database reference till contact >> user+id
     private DatabaseReference mUserEndPoint = null;
-    private WriteDeviceContactAsyncTask mWriteDeviceContactAsyncTask = null;
 
     private ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
@@ -48,17 +45,16 @@ public class CloudContactActivity extends BaseContactActivity {
                     Log.d(TAG, "ValueEventListener : " + "Response : " + response);
 
                     if (dataSnapshot.getChildren() != null) {
-                        List<Contact> contacts = new ArrayList<>();
+                        List<Sms> contacts = new ArrayList<>();
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             Log.d(TAG, "ValueEventListener : " + "Key : " + postSnapshot.getKey());
-                            Contact contact = postSnapshot.getValue(Contact.class);
-                            if (contact != null) {
-                                contacts.add(contact);
-                                Log.d(TAG, "ValueEventListener : " + "contact : " + contact.getContactName() + "," +
-                                        contact.getId());
+                            Sms sms = postSnapshot.getValue(Sms.class);
+                            if (sms != null) {
+                                contacts.add(sms);
+
                             }
                         }
-                        showContacts(contacts);
+                        showSms(contacts);
                     }
                 }
             }
@@ -88,14 +84,14 @@ public class CloudContactActivity extends BaseContactActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        nullifyAsyncTasks(mWriteDeviceContactAsyncTask);
+
     }
 
     // start fetching contacts from cloud server
     private void startCloudContactDownloadTask() {
-        String userId = CommonUtils.getUserId(CloudContactActivity.this, getApplicationContext());
+        String userId = CommonUtils.getUserId(CloudSmsActivity.this, getApplicationContext());
         if (userId != null) {
-            mUserEndPoint = DatabaseHelper.getUserContactEndPoint(userId);
+            mUserEndPoint = DatabaseHelper.getUserSmsEndPoint(userId);
             addDatabaseListener();
             showProgress();
             // perform a sample write operation on cloud and you will get the data in listener
@@ -120,44 +116,29 @@ public class CloudContactActivity extends BaseContactActivity {
     @Override
     protected void performUploadDownload(View view) {
         super.performUploadDownload(view);
-        List<Contact> selectedContacts = new ArrayList<Contact>();
-        selectedContacts.clear();
+
+        List<Sms> selectedSms = new ArrayList<Sms>();
+        selectedSms.clear();
         boolean selectedContact_cb[] = mListAdapter.getCheckedHolder();
 
         for (int i = 0; i < mListAdapter.getCount(); i++) {
 
+
             if (selectedContact_cb[i]) {
-                Contact contact = (Contact) mLvContact.getAdapter().getItem(i);
-                selectedContacts.add(contact);
+
+                Log.d("check","check" + selectedContact_cb[i] + " : " + i);
+                Sms contact = (Sms) mLvSms.getAdapter().getItem(i);
+                selectedSms.add(contact);
             }
         }
 
-
-        if (CommonUtils.isCollectionNullOrEmpty(selectedContacts)) {
+        if (CommonUtils.isCollectionNullOrEmpty(selectedSms)) {
             Snackbar.make(view, R.string.select_atleast_one, Snackbar.LENGTH_SHORT).show();
-        } else {
-            writeContactsInDevice(selectedContacts);
         }
     }
 
     // start async task to write selected cloud contacts in device
-    private void writeContactsInDevice(final List<Contact> selectedContacts) {
-        mWriteDeviceContactAsyncTask = new WriteDeviceContactAsyncTask(getApplicationContext(), selectedContacts) {
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                showProgress();
-            }
-
-            @Override
-            protected void onPostExecute(Integer successFullWriteCount) {
-                hideProgress();
-                showConfirmationDialog(selectedContacts.size() == successFullWriteCount);
-            }
-        };
-        mWriteDeviceContactAsyncTask.execute();
-    }
 
     // show confirmation dialog, whether contacts written on device successfully or not
     private void showConfirmationDialog(boolean uploadSuccessful) {
@@ -172,7 +153,7 @@ public class CloudContactActivity extends BaseContactActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                CloudContactActivity.this.finish();
+                CloudSmsActivity.this.finish();
             }
         });
         uploadAlertDialog.create().show();

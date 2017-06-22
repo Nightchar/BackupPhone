@@ -57,6 +57,47 @@
         <item name="android:gravity">center_horizontal</item>
     </style>
 
+    <style name="SettingDashboardText" parent="AllWrapContent">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <style name="PhoneContactText" parent="AllWrapContent">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PhoneNumberText" parent="AllWrapContent">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
+    <style name="PhoneSmsAddress" parent="AllWrapContent">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="PhoneSmsDate" parent="AllWrapContent">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
+    <style name="PhoneSmsMessage" parent="AllWrapContent">
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:textSize">14dp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+
+
+
     <style name="DashboardImage" parent="AllMatchParent">
         <item name="android:scaleType">fitCenter</item>
         <item name="android:layout_margin">20dip</item>

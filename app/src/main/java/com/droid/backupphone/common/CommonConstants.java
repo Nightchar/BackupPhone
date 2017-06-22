@@ -7,6 +7,9 @@ public class CommonConstants {
     public static final String IS_SIM = "is_sim";
 
     public static final int REQUEST_READ_CONTACT = 1;
+    public static final int REQUEST_READ_SMS = 2;
+    public static final int REQUEST_READ_PHOTO = 3;
+    public static final int REQUEST_READ_VIDEO = 4;
 
     public static final String UNDER_LINE_OPEN_TAG = "<u>";
     public static final String UNDER_LINE_CLOSE_TAG = "</u>";

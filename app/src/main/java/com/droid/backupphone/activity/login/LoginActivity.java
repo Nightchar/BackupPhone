@@ -80,6 +80,8 @@ public class LoginActivity extends BaseSignInSignUpActivity implements View.OnCl
                         PreferenceUtils.saveUserEmail(getApplicationContext(), user.getEmail());
                         Intent intent = new Intent(LoginActivity.this, DashboardActivity.class);
                         startActivity(intent);
+
+                        finish();
                     }
                     showProgress(false);
                 } else {

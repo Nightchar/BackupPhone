@@ -54,7 +54,7 @@ public class FetchDeviceContactAsyncTask extends AsyncTask<Void, Void, List<Cont
 
                 // fetch phone number for each contact
                 if (isContactHasPhoneNumber(cursor)) {
-                    Log.e(TAG, "Contact name : " + contactName);
+//                    Log.e(TAG, "Contact name : " + contactName);
                     retrievePhoneForContact(contactId, phoneList);
                 }
 
@@ -96,7 +96,7 @@ public class FetchDeviceContactAsyncTask extends AsyncTask<Void, Void, List<Cont
                             && phoneType <= ContactsContract.CommonDataKinds.Phone.TYPE_MMS) {
                         phone = new PhoneDetail(phoneType, phoneNo);
                     }
-                    showLog(phoneType, phoneNo, isSim);
+//                    showLog(phoneType, phoneNo, isSim);
 
                     // if onlyDeviceContact = true, only device contact will be saved here
                     if (phone != null && (mIsOnlyDeviceContact ? !isSim : true)) {

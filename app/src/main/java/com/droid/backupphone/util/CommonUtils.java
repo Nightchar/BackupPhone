@@ -92,6 +92,9 @@ public class CommonUtils {
     public static DatabaseReference getContactEndPoint() {
         return getDatabaseReference().child("contacts");
     }
+    public static DatabaseReference getSmsEndPoint() {
+        return getDatabaseReference().child("sms");
+    }
 
     /**
      * Get user id from shared preference else logout.

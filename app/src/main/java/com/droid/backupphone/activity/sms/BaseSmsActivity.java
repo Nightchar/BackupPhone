@@ -1,4 +1,4 @@
-package com.droid.backupphone.activity.contact;
+package com.droid.backupphone.activity.sms;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,26 +13,28 @@ import android.widget.ListView;
 import android.widget.TextView;
 import com.droid.backupphone.R;
 import com.droid.backupphone.activity.BaseActivity;
-import com.droid.backupphone.adapter.MultiSelectContactListAdapter;
-import com.droid.backupphone.model.contact.Contact;
+import com.droid.backupphone.activity.contact.CloudContactActivity;
+import com.droid.backupphone.activity.contact.PhoneContactActivity;
+import com.droid.backupphone.adapter.MultiSelectSmsListAdapter;
+import com.droid.backupphone.model.sms.Sms;
 
 import java.util.List;
 
 /**
  * The base class for {@link CloudContactActivity} and {@link PhoneContactActivity}
  */
-public class BaseContactActivity extends BaseActivity {
+public class BaseSmsActivity extends BaseActivity {
 
     protected FloatingActionButton mFabUploadDownload = null;
-    protected ListView mLvContact = null;
+    protected ListView mLvSms = null;
     protected TextView mTvNoData = null;
     protected View mLoadingProgress = null;
-    public MultiSelectContactListAdapter mListAdapter = null;
+    protected MultiSelectSmsListAdapter mListAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phone_contact);
+        setContentView(R.layout.activity_phone_sms);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -44,7 +46,7 @@ public class BaseContactActivity extends BaseActivity {
             }
         });
 
-        mLvContact = (ListView) findViewById(R.id.lv_contact);
+        mLvSms = (ListView) findViewById(R.id.lv_sms);
         mTvNoData = (TextView) findViewById(R.id.tv_no_data);
         mLoadingProgress = findViewById(R.id.view_contact_progress);
     }
@@ -75,16 +77,14 @@ public class BaseContactActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_select_all:
-                selectAllContact(item.isChecked());
+                selectAllSms(item.isChecked());
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     // select / deselect all contacts in listview.
-    private void selectAllContact(boolean checked) {
-
-//        Log.d("check","count "+mListAdapter.getCount() + " : " + checked );
+    private void selectAllSms(boolean checked) {
         mListAdapter.updateCheckBox(checked);
     }
 
@@ -94,26 +94,26 @@ public class BaseContactActivity extends BaseActivity {
     }
 
     // show list of contacts in list view.
-    protected void showContacts(List<Contact> contacts) {
-        mLvContact.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        mListAdapter = new MultiSelectContactListAdapter(this, contacts);
-        mLvContact.setAdapter(mListAdapter);
-        mLvContact.setVisibility(View.VISIBLE);
+    protected void showSms(List<Sms> contacts) {
+        mLvSms.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        mListAdapter = new MultiSelectSmsListAdapter(this,  contacts);
+        mLvSms.setAdapter(mListAdapter);
 
+        mLvSms.setVisibility(View.VISIBLE);
         mFabUploadDownload.setVisibility(View.VISIBLE);
     }
 
     // show progress bar & hide other UI components
     protected void showProgress() {
         mFabUploadDownload.setVisibility(View.GONE);
-        mLvContact.setVisibility(View.GONE);
+        mLvSms.setVisibility(View.GONE);
         mLoadingProgress.setVisibility(View.VISIBLE);
     }
 
     // hide progress bar and show other UI components
     protected void hideProgress() {
         mFabUploadDownload.setVisibility(View.VISIBLE);
-        mLvContact.setVisibility(View.VISIBLE);
+        mLvSms.setVisibility(View.VISIBLE);
         mLoadingProgress.setVisibility(View.GONE);
     }
 }

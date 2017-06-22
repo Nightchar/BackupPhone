@@ -1,4 +1,4 @@
-package com.droid.backupphone.activity.contact;
+package com.droid.backupphone.activity.sms;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -8,11 +8,11 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.AdapterView;
 import com.droid.backupphone.R;
-import com.droid.backupphone.asynctask.contact.FetchDeviceContactAsyncTask;
+import com.droid.backupphone.asynctask.sms.FetchDeviceSmsAsyncTask;
 import com.droid.backupphone.helper.DatabaseHelper;
 import com.droid.backupphone.model.contact.Contact;
+import com.droid.backupphone.model.sms.Sms;
 import com.droid.backupphone.util.CommonUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,14 +25,14 @@ import java.util.List;
 /**
  * The class is used to fetch device contacts and upload selected contact on cloud server.
  */
-public class PhoneContactActivity extends BaseContactActivity {
-    private static final String TAG = "PhoneContactActivity";
-    private boolean isOnlyDeviceContact = true;
-    private FetchDeviceContactAsyncTask mFetchDeviceContactAsyncTask = null;
+public class PhoneSmsActivity extends BaseSmsActivity {
+    private static final String TAG = "PhoneSmsActivity";
+
+    private FetchDeviceSmsAsyncTask mFetchDeviceContactAsyncTask = null;
 
     // the database reference till contact >> user+id
     private DatabaseReference mUserEndPoint = null;
-
+//
     private ValueEventListener valueEventListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -68,7 +68,7 @@ public class PhoneContactActivity extends BaseContactActivity {
         super.onCreate(savedInstanceState);
         mFabUploadDownload.setImageDrawable(ContextCompat.getDrawable(this, android.R.drawable.stat_sys_upload_done));
 
-        startDeviceContactTask();
+        startDeviceSmsTask();
     }
 
     @Override
@@ -84,62 +84,61 @@ public class PhoneContactActivity extends BaseContactActivity {
     }
 
     // start async task to fetch the contact list from device.
-    private void startDeviceContactTask() {
-        mFetchDeviceContactAsyncTask = new FetchDeviceContactAsyncTask(this, isOnlyDeviceContact) {
+    private void startDeviceSmsTask() {
+        mFetchDeviceContactAsyncTask = new FetchDeviceSmsAsyncTask(this) {
 
             @Override
-            protected void onPostExecute(List<Contact> contacts) {
-
-//                Log.d("check","size " + contacts.size());
-
+            protected void onPostExecute(List<Sms> smsList) {
                 mLoadingProgress.setVisibility(View.GONE);
-                if (CommonUtils.isCollectionNullOrEmpty(contacts)) {
+                if (CommonUtils.isCollectionNullOrEmpty(smsList)) {
                     mTvNoData.setVisibility(View.VISIBLE);
                 } else {
-                    showContacts(contacts);
-
+                    showSms(smsList);
                 }
             }
         };
         mFetchDeviceContactAsyncTask.execute();
-
     }
 
     @Override
     protected void performUploadDownload(View view) {
         super.performUploadDownload(view);
 
-        List<Contact> selectedContacts = new ArrayList<Contact>();
-        selectedContacts.clear();
+        List<Sms> selectedSms = new ArrayList<Sms>();
+        selectedSms.clear();
         boolean selectedContact_cb[] = mListAdapter.getCheckedHolder();
 
         for (int i = 0; i < mListAdapter.getCount(); i++) {
 
+
             if (selectedContact_cb[i]) {
-                Contact contact = (Contact) mLvContact.getAdapter().getItem(i);
-                selectedContacts.add(contact);
+
+                Log.d("check","check" + selectedContact_cb[i] + " : " + i);
+                Sms contact = (Sms) mLvSms.getAdapter().getItem(i);
+                selectedSms.add(contact);
             }
         }
 
-        if (CommonUtils.isCollectionNullOrEmpty(selectedContacts)) {
+        if (CommonUtils.isCollectionNullOrEmpty(selectedSms)) {
             Snackbar.make(view, R.string.select_atleast_one, Snackbar.LENGTH_SHORT).show();
         } else {
-            uploadContactsToCloud(selectedContacts);
+//            uploadSmsToCloud(selectedSms);
         }
+
     }
 
     // method performs operation on cloud server to upload selected contacts
-    private void uploadContactsToCloud(List<Contact> selectedContacts) {
-        String userId = CommonUtils.getUserId(PhoneContactActivity.this, getApplicationContext());
+    private void uploadSmsToCloud(List<Sms> selectedSms) {
+        String userId = CommonUtils.getUserId(PhoneSmsActivity.this, getApplicationContext());
         if (userId != null) {
-            mUserEndPoint = DatabaseHelper.getUserContactEndPoint(userId);
-            DatabaseHelper.writeNewContact(mUserEndPoint, selectedContacts);
+            mUserEndPoint = DatabaseHelper.getUserSmsEndPoint(userId);
+            DatabaseHelper.writeNewSms(mUserEndPoint, selectedSms);
             addDatabaseListener();
             showProgress();
         }
     }
 
-    // add database listener
+//     add database listener
     private void addDatabaseListener() {
         mUserEndPoint.addValueEventListener(valueEventListener);
     }
@@ -153,24 +152,22 @@ public class PhoneContactActivity extends BaseContactActivity {
         }
     }
 
-    // show confirmation dialog, whether contacts uploaded on cloud server successfully or not
+    // show confirmation dialog, whether Sms uploaded on cloud server successfully or not
     private void showConfirmationDialog(boolean uploadSuccessful) {
         AlertDialog.Builder uploadAlertDialog = new AlertDialog.Builder(this);
         if (uploadSuccessful) {
-            uploadAlertDialog.setMessage(R.string.contact_upload_success);
+            uploadAlertDialog.setMessage(R.string.sms_upload_success);
         } else {
-            uploadAlertDialog.setMessage(R.string.err_contact_upload_fail);
+            uploadAlertDialog.setMessage(R.string.err_sms_upload_fail);
         }
         uploadAlertDialog.setCancelable(false);
         uploadAlertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                PhoneContactActivity.this.finish();
+                PhoneSmsActivity.this.finish();
             }
         });
         uploadAlertDialog.create().show();
     }
-
-
 }

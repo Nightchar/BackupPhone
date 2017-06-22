@@ -121,7 +121,7 @@
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cv_videos"
+            android:id="@+id/cv_setting"
             style="@style/AppTheme.Card.Margins"
             android:layout_width="0dip"
             android:layout_height="match_parent"
@@ -133,14 +133,14 @@
                 android:padding="10dip">
 
                 <TextView
-                    android:id="@+id/tv_videos"
+                    android:id="@+id/tv_setting"
                     style="@style/DashboardText"
-                    android:text="@string/videos"/>
+                    android:text="@string/setting"/>
 
                 <ImageView
                     style="@style/DashboardImage"
-                    android:layout_above="@id/tv_videos"
-                    android:src="@drawable/video_icon"/>
+                    android:layout_above="@id/tv_setting"
+                    android:src="@drawable/setting_icon_dash"/>
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

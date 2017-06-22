@@ -16,7 +16,6 @@
     <string name="action_sign_in">SIGN IN</string>
     <string name="action_forget_password">Forgot Password?</string>
     <string name="action_create_account">CREATE ACCOUNT</string>
-    <string name="action_reset_password">RESET PASSWORD</string>
     <string name="dont_have_account">Don\'t have user account?</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
@@ -25,19 +24,45 @@
     <string name="auth_failed">Authentication failed</string>
     <string name="signup_failed">SignUp Process failed</string>
     <string name="signup_success">Your account has been successfully created.</string>
+    <string name="signup_msg">We just need you to enter valid Email Id for contact later on for any problem.</string>
     <string name="cancel">Cancel</string>
     <string name="loading_msg">Please wait&#8230;</string>
     <string name="list_empty">No data available</string>
     <string name="title_activity_signup">SignUp</string>
+    <string name="title_activity_reset_password">Reset Password</string>
+    <string name="title_activity_sms">Sms</string>
+
+    <!-- Reset screen-->
+    <string name="action_reset_password">RESET PASSWORD</string>
+    <string name="lable_reset_password">Forgot Password ?</string>
+    <string name="reset_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
+
+
+    <!-- Password Update screen-->
+    <string name="action_update_password">NEW PASSWORD</string>
+    <string name="lable_update_password">Update Password ?</string>
+    <string name="update_password_msg">We just need new password for given Account info.</string>
+    <string name="update_prompt_password">New Password</string>
+
 
     <!-- Dashboard screen-->
     <string name="title_activity_dashboard">Dashboard</string>
     <string name="logout_message">Do you really want to leave the authenticated area?</string>
     <string name="welcome">Welcome,</string>
+    <string name="current_email">Current User Email,</string>
     <string name="contacts">Contacts</string>
     <string name="sms">SMS</string>
     <string name="photos">Photos</string>
     <string name="videos">Videos</string>
+    <string name="setting">Setting</string>
+
+    <!--Setting Dashboar-->
+    <string name="title_activity_setting">Setting</string>
+    <string name="setting_current_user_profile">User Profile</string>
+    <string name="setting_user_profile_update">Change User Profile Info</string>
+    <string name="setting_update_password">Password Update</string>
+    <string name="setting_change_email">Update Email</string>
+    <string name="setting_delete_account">Delete Account</string>
 
     <!-- Contact sync screen -->
     <string name="title_activity_contact_sync">Contact Sync</string>
@@ -49,6 +74,25 @@
         \"Phone Contact\" button.</string>
     <string name="msg_cloud_contact">To download contacts from Cloud Server please click on \"Cloud Contact\" button
         .</string>
+
+
+    <!-- Sms sync screen -->
+    <string name="title_activity_sms_sync">Sms Sync</string>
+    <string name="phone_sms">Phone Sms</string>
+    <string name="cloud_sms">Cloud Sms</string>
+    <string name="sms_feature1">Feature1,</string>
+    <string name="sms_feature2">Feature2,</string>
+    <string name="msg_phone_sms">Here, you can upload all your device Sms on Cloud Server by clicking on
+        \"Phone Sms\" button.</string>
+    <string name="msg_cloud_sms">To download Sms from Cloud Server please click on \"Cloud Sms\" button
+        .</string>
+
+    <!-- PhoneDetail contact sync screen -->
+    <string name="title_activity_sms_contact">Phone Sms</string>
+    <string name="select_atleast_one_sms">Please select at least one sms.</string>
+    <string name="sms_upload_success">Hurray!\n\nSms has been uploaded successfully.</string>
+    <string name="err_sms_upload_fail">Sorry!\n\nSms upload has been failed due to technical reason. Please
+        try again later.</string>
 
     <!-- PhoneDetail contact sync screen -->
     <string name="title_activity_phone_contact">Phone Contact</string>

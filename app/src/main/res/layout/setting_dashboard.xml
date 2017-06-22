@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/MatchParentWrapContent"
+        android:orientation="vertical"
+        android:layout_margin="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/cv_current_user_profile"
+            style="@style/AppTheme.Card.Margins"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip">
+        <RelativeLayout
+                style="@style/MatchParentWrapContent"
+                android:padding="10dip">
+
+            <TextView
+                    style="@style/SettingDashboardText"
+                    android:text="@string/setting_current_user_profile"/>
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/cv_user_profile_update"
+            style="@style/AppTheme.Card.Margins"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip">
+             <RelativeLayout
+                style="@style/MatchParentWrapContent"
+                android:padding="10dp">
+
+            <TextView
+                    style="@style/SettingDashboardText"
+                    android:text="@string/setting_user_profile_update"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/cv_update_password"
+            style="@style/AppTheme.Card.Margins"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip">
+        <RelativeLayout
+                style="@style/MatchParentWrapContent"
+                android:padding="10dp">
+
+            <TextView
+                    style="@style/SettingDashboardText"
+                    android:text="@string/setting_update_password"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/cv_change_email"
+            style="@style/AppTheme.Card.Margins"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip">
+        <RelativeLayout
+                style="@style/MatchParentWrapContent"
+                android:padding="10dp">
+
+            <TextView
+                    style="@style/SettingDashboardText"
+                    android:text="@string/setting_change_email"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+            android:id="@+id/cv_delete_account"
+            style="@style/AppTheme.Card.Margins"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip">
+        <RelativeLayout
+                style="@style/MatchParentWrapContent"
+                android:padding="10dp">
+
+            <TextView
+                    style="@style/SettingDashboardText"
+                    android:text="@string/setting_delete_account"/>
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+
+</LinearLayout>

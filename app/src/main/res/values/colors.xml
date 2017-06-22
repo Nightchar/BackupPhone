@@ -7,4 +7,26 @@
     <color name="splash_start">#ffffff</color>
     <color name="splash_end">#E4E4E4</color>
     <color name="white">#FFFFFF</color>
+
+    <color name="bg_login">#26ae90</color>
+    <color name="bg_register">#2e3237</color>
+    <color name="bg_main">#428bca</color>
+    <color name="input_login">#222222</color>
+    <color name="input_login_hint">#999999</color>
+    <color name="input_register">#888888</color>
+    <color name="input_register_bg">#3b4148</color>
+    <color name="input_register_hint">#5e6266</color>
+    <color name="btn_login">#26ae90</color>
+    <color name="btn_login_bg">#eceef1</color>
+    <color name="lbl_name">#333333</color>
+    <color name="btn_logut_bg">#ff6861</color>
+
+    <!--phone contact-->
+    <color name="contact_phone_name">#76696e</color>
+    <color name="contact_phone_number">#999999</color>
+
+    <!--phone sms-->
+    <color name="sms_phone_address">#76696e</color>
+    <color name="sms_phone_date">#6d545d</color>
+    <color name="sms_phone_message">#999999</color>
 </resources>
